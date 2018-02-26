@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>PWA & SW</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <style>
+      .reveal { background-color: #003C5A; }
+      .reveal section img {
+        background: none;
+        border: none;
+        box-shadow: none;
+      }
+
+      .reveal code { color: tomato; }
+      .reveal .font-small,
+      .reveal blockquote { font-size: 0.6em; }
+      .reveal .font-smallest { font-size: 0.4em; }
+    </style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+        <section>
+          <h1>PWA, SW & WTH?</h1>
+          <h3>Progressive Web Applications<br>& Service-workers</h3>
+          <br><br>
+          <p>andreas johan virkus, 2018</p>
+        </section>
+
+				<section>
+          <h2>The <code>What the Hack</code> part</h2>
+          <blockquote>Progressive Web Apps use modern web capabilities to deliver an app-like user
+            experience. They evolve from pages in browser tabs to immersive, top-level apps,
+            maintaining the web's low friction at every moment.</blockquote>
+            <p>- Google Developers</p>
+
+					<blockquote>Service worker (SW) is a programmable network proxy, allowing you to control
+            how network requests from your page are handled.</blockquote>
+            <p>- HTML5 Rocks</p>
+        </section>
+
+				<section>
+          <h2>PWA</h2>
+
+          It "is"/"should have"...
+          <ul class="font-smallest">
+            <li><strong>Progressive</strong> - Works for every user, regardless of browser choice because<br> it's built with <strong>progressive enhancement</strong> as a core tenet.</li>
+            <li><strong>Responsive</strong> - Fits any form factor: desktop, mobile, tablet, or whatever is next.</li>
+            <li><strong>Connectivity independent</strong> - Enhanced with service workers to work offline or on low-quality networks.</li>
+            <li><strong>App-like</strong> - Feels like an app, because the app shell model separates the application<br><em>functionality</em> from application <em>content</em>.</li>
+            <li><strong>Fresh</strong> - Always up-to-date thanks to the <a href="https://developers.google.com/web/fundamentals/getting-started/primers/service-workers">service worker</a> update process.</li>
+            <li><strong>Safe</strong> - Served via HTTPS to prevent snooping and to ensure content hasn't been tampered with.</li>
+            <li><strong>Discoverable</strong> - Is identifiable as an "application" thanks to  <a href="https://developers.google.com/web/updates/2014/11/Support-for-installable-web-apps-with-webapp-manifest-in-chrome-38-for-Android">W3C manifest</a><br> and <a href="https://developers.google.com/web/fundamentals/instant-and-offline/service-worker/registration">service worker registration</a> scope, allowing search engines to find it.</li>
+            <li><strong>Re-engageable</strong> - Makes re-engagement easy through features like push notifications.</li>
+            <li><strong>Installable</strong> - Allows users to add apps they find most useful to their home screen<br> without the hassle of an app store.</li>
+            <li><strong>Linkable</strong> - Easily share the application via URL, does not require complex installation.</li>
+          </ul>
+        </section>
+
+				<section>
+          <h2>PWA</h2>
+
+          Requirements
+          <ul>
+            <li>A valid (and installed) W3C manifest</li>
+            <li>A registered & installed service worker</li>
+            <li>Must be served over HTTPS<br>
+              (except for <code>127.x.y.z</code> or <code>localhost</code>)</li>
+            <li>Must be visited at least twice within <code>5 minutes</code></li>
+          </ul>
+        </section>
+
+				<section>
+          <section>
+            <h2>Manifest</h2>
+
+            <img alt="Example of manifest.json" src="/code-examples/manifest.png">
+
+            <aside class="notes">
+              A lot of different options (like description, language, related_applications for play and iOS, etc.)
+            </aside>
+          </section>
+
+          <section>
+            <h2>Deploying your manifest</h2>
+
+            Format can be either <code>.json</code> or <code>.webmanifest</code>
+
+            <img alt="Registering your manifest.json" src="/code-examples/manifest-deploy.png">
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Service Workers</h2>
+
+            <aside class="notes">
+              <p>A <code>Web Worker</code> at its core, meaning it can't access the DOM</p>
+              <p>Service worker is a programmable network proxy, allowing you to control how network requests from your page are handled.</p>
+              <p>It's terminated when not in use, and restarted when it's next needed, so you cannot rely on
+                global state within a service worker's onfetch and onmessage handlers. If there is
+                information that you need to persist and reuse across restarts, service workers do have access to the IndexedDB API.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Events</h2>
+            <p>A stateless, event-driven API</p>
+
+            <img alt="A list of ServiceWorker events" src="/code-examples/sw-events.png">
+
+            <aside class="notes">
+              <p>Install is great for priming your cache (defining which resources to cache by default).</p>
+              <p>Activate can be used to remove stale cache.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Installing & registering</h2>
+            <p>This happens client-side:</p>
+
+            <img alt="Registering a service worker" src="/code-examples/sw-register.png">
+          </section>
+
+          <section>
+            <h2>Installing & registering</h2>
+            <p>And then our worker can hook into it:</p>
+
+            <img alt="Listening for worker install" src="/code-examples/sw-install.png">
+
+            <aside class="notes">
+              <p>The caches built-in is a promise-based API that helps you cache responses,
+                as well as finding and deleting them.</p>
+              <p>You can open a cache by name, and this method returns a promise. We use
+                a versioned cache name here so that we can remove old cache entries in
+                one fell swoop later, when phasing out an older service worker.</p>
+              <p>After the cache is opened, we can fill it with the offline fundamentals.
+                The method below will add all resources we've indicated to the cache,
+                after making HTTP requests for each of them.</p>
+            </aside>
+          </section>
+        </section>
+
+				<section data-background-image="https://media0.giphy.com/media/MURsKMKVsVgXu/giphy.gif">
+					<h2>Demo time!</h2>
+        </section>
+
+        <section>
+          <h2>Workflow</h2>
+
+          <ul>
+            <li><a href="https://www.npmjs.com/package/sw-precache-webpack-plugin">sw-precache-webpack-plugin</a></li>
+            <li><a href="https://jakearchibald.github.io/isserviceworkerready/resources.html">serviceworkers/list</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>References:</h2>
+
+          <ul>
+            <li><a href="https://ponyfoo.com/articles/tagged/serviceworker">PonyFoo/serviceworker</a></li>
+            <li><a href="https://jakearchibald.github.io/isserviceworkerready/resources.html">serviceworkers/list</a></li>
+            <li><a href="https://developers.google.com/web/fundamentals/primers/service-workers/">Google devs</a></li>
+            <li><a href="https://ponyfoo.com/articles/progressive-app-serviceworker">PonyFoo/PWA+SW</a></li>
+            <li><a href="https://ponyfoo.com/articles/simple-offline-site-serviceworker">PonyFoo/offline SW</a></li>
+            <li><a href="https://ponyfoo.com/articles/backgroundsync">PonyFoo/background-sync</a></li>
+            <li><a href="https://ponyfoo.com/articles/progressive-networking-serviceworker">PonyFoo/SW networking</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Questions? No?</h2>
+
+          <h2>Thanks!</h2>
+        </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+        transition: 'convex',
+        backgroundTransition: 'zoom',
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
