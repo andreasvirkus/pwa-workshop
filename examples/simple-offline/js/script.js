@@ -19,7 +19,5 @@
     navigator.serviceWorker.register('/worker.js')
       .then(reg => console.log('CLIENT: service worker registration complete:', reg))
       .catch(err => console.error('CLIENT: service worker registration failure:', err))
-  } else {
-    console.log('CLIENT: service worker is not supported.')
   }
 })()

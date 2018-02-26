@@ -1,5 +1,5 @@
 // Based off of https://ponyfoo.com/articles/simple-offline-site-serviceworker
-const version = 'v1::'
+const version = 'v2::'
 
 self.addEventListener('install', event => {
   console.log('WORKER: install event in progress.')
@@ -81,7 +81,7 @@ self.addEventListener('fetch', event => {
 
           caches
             // We open a cache to store the response for this request.
-            .open(version + 'pages')
+            .open(version + 'fundamentals')
             .then(cache => {
               /* We store the response for this request. It'll later become
                  available to caches.match(event.request) calls, when looking
