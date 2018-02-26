@@ -2,16 +2,16 @@
   const allNavItems = $('.main-nav li')
   const allTabs = $('.tab')
 
-  allNavItems.on('click', e => {
+  allNavItems.on('click', function(e) {
     e.preventDefault()
 
     allNavItems.removeClass('active')
     allTabs.removeClass('active')
 
-    $(this).addClass('active')
-      .find('a')
-      .attr('href')
-      .addClass('active')
+    $(this).addClass("active");
+
+    const selector = $(this).find("a").attr("href");
+    $(selector).addClass("active");
   })
 
   if ('serviceWorker' in navigator) {
