@@ -9,3 +9,8 @@ Various (really?) examples can be found in `/examples` (and hopefully will be up
 complex additions).
 
 Feel free to use and/or modify this to your liking.
+
+## TODO:
+- Example & workshop using BackgroundSync
+- Example & workshop using push notifications
+- Example & workshop using scoped workers
