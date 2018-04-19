@@ -131,6 +131,8 @@
               <p>Install is great for priming your cache (defining which resources to cache by default).</p>
               <p>Activate can be used to remove stale cache.</p>
               <p>Registration also exposes the ServiceWorkerGlobalScope (useful later in push notifications)</p>
+              <p>All ServiceWorker events may be terminated if they're taking an unreasonable amount of time or CPU.
+                This is not a tool for distributed bitcoin mining :)</p>
             </aside>
           </section>
 
@@ -361,6 +363,7 @@
               <li><a href="https://www.npmjs.com/package/sw-precache-webpack-plugin">sw-precache-webpack-plugin</a></li>
               <li><a href="https://github.com/GoogleChromeLabs/sw-toolbox">Google sw-toolbox</a></li>
               <li><a href="https://jakearchibald.github.io/isserviceworkerready/resources.html">serviceworkers/list</a></li>
+              <li><a href="https://www.npmjs.com/package/fetch-sync">fetch-sync</a></li>
             </ul>
 
             <aside class="notes">
@@ -377,17 +380,7 @@
         <section>
           <h2>References:</h2>
 
-          <ul>
-            <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers">MDN/Web Workers</a></li>
-            <li><a href="https://ponyfoo.com/articles/tagged/serviceworker">PonyFoo/serviceworker</a></li>
-            <li><a href="https://jakearchibald.github.io/isserviceworkerready/resources.html">serviceworkers/list</a></li>
-            <li><a href="https://developers.google.com/web/fundamentals/primers/service-workers/">Google devs</a></li>
-            <li><a href="https://ponyfoo.com/articles/progressive-app-serviceworker">PonyFoo/PWA+SW</a></li>
-            <li><a href="https://ponyfoo.com/articles/simple-offline-site-serviceworker">PonyFoo/offline caching</a></li>
-            <li><a href="https://ponyfoo.com/articles/backgroundsync">PonyFoo/background-sync</a></li>
-            <li><a href="https://ponyfoo.com/articles/progressive-networking-serviceworker">PonyFoo/SW networking</a></li>
-            <li><a href="https://github.com/andreasvirkus/pwa-workshop#resources">Slides README.md</a></li>
-          </ul>
+          <a href="https://github.com/andreasvirkus/pwa-workshop#resources">Slides README.md</a>
         </section>
 
         <section data-background-image="https://media0.giphy.com/media/6Q2KA5ly49368/giphy.gif">

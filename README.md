@@ -28,9 +28,19 @@ Great PWA/SW resources to look into (also see slides/index.html References secti
 - the [spec](https://github.com/w3c/ServiceWorker)
 - Webpack [plugin](https://www.npmjs.com/package/sw-precache-webpack-plugin)
 - [BackgroundSync](https://github.com/WICG/BackgroundSync/blob/master/explainer.md)
+- [WebPush book](https://web-push-book.gauntface.com/)
+  - [Common notification patterns](https://web-push-book.gauntface.com/chapter-05/04-common-notification-patterns/)
+- [MDN/WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers")
+- [PonyFoo articles](https://ponyfoo.com/articles/tagged/serviceworker")
+- [serviceworkers/list](https://jakearchibald.github.io/isserviceworkerready/resources.html)
+- [Google devs/service-workers](https://developers.google.com/web/fundamentals/primers/service-workers/)
 
 ## TODO:
 - ~Example of offline support~
 - ~Example & workshop using BackgroundSync~
-- Example & workshop using push notifications
+- ~Example & workshop using notifications~
 - Example & workshop using scoped workers
+- Example & workshop of Web Push + VAPID, PushManager
+  - An example using [web-push](https://github.com/web-push-libs/web-push)
+  - https://thihara.github.io/Web-Push/
+- Example & workshop about realtime data updates, e.g. updating a /json endpoint without reloads (https://blog.pusher.com/offline-and-realtime/)

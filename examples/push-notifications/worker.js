@@ -1,9 +1,10 @@
-const version = 'v2::'
+const version = 'v1::'
+const name = 'notification'
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches
-      .open(version + 'background')
+      .open(version + name)
       .then(cache =>
         cache.addAll([
           '/',
@@ -33,7 +34,7 @@ self.addEventListener('fetch', event => {
           const cacheCopy = response.clone()
 
           caches
-            .open(version + 'background')
+            .open(version + name)
             .then(cache => {
               cache.put(event.request, cacheCopy)
             })
@@ -66,11 +67,11 @@ self.addEventListener('activate', event => {
 })
 
 self.addEventListener('sync', event => {
-  console.log('WORKER sync tag:', event.tag);
   event.tag === 'speakerUpdate' && event.waitUntil(sendUpdates())
 })
 
 self.addEventListener('notificationclick', event => {
+  console.log('WORKER: Notification clicked');
   event.notification.close()
 
   event.waitUntil(clients.matchAll({ type: "window" })
@@ -83,12 +84,21 @@ self.addEventListener('notificationclick', event => {
   )
 })
 
-
 function sendUpdates () {
   return fetch('/speakers.json')
     .then(res => res.json())
-    .then(res => console.log('WORKER: Request successful', res))
-    .then(() => self.registration.showNotification('New speakers arrived!'))
+    .then(res => {
+      self.registration.showNotification('New speakers at Offline Conf!', {
+        body: '👨‍🚀 ' + res.additions
+      })
+      return res.additions
+    })
+    .then(additions => {
+      self.clients.matchAll()
+      .then(clients =>
+        clients.forEach(client => client.postMessage(additions))
+      )
+    })
     .catch(error => {
       console.error('WORKER: Request failed; scheduled for next time', error)
       return Promise.reject(error) // throw error

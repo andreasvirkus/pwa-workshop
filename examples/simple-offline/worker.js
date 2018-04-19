@@ -1,5 +1,6 @@
 // Based off of https://ponyfoo.com/articles/simple-offline-site-serviceworker
 const version = 'v2::'
+const name = 'offline'
 
 self.addEventListener('install', event => {
   console.log('WORKER: install event in progress.')
@@ -12,7 +13,7 @@ self.addEventListener('install', event => {
          a versioned cache name here so that we can remove old cache entries in
          one fell swoop later, when phasing out an older service worker.
       */
-      .open(version + 'fundamentals')
+      .open(version + name)
       .then(cache =>
         /* After the cache is opened, we can fill it with the offline fundamentals.
            The method below will add all resources we've indicated to the cache,
@@ -81,7 +82,7 @@ self.addEventListener('fetch', event => {
 
           caches
             // We open a cache to store the response for this request.
-            .open(version + 'fundamentals')
+            .open(version + name)
             .then(cache => {
               /* We store the response for this request. It'll later become
                  available to caches.match(event.request) calls, when looking

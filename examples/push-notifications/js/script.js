@@ -2,6 +2,7 @@
   const allNavItems = $('.main-nav li')
   const allTabs = $('.tab')
   const regButton = $('#register')
+  const speakers = $('#speakers-list')
 
   allNavItems.on('click', function(e) {
     e.preventDefault()
@@ -36,18 +37,26 @@
         // Notification.requestPermission();
         console.log('CLIENT: request notification permission');
 
+        navigator.serviceWorker.addEventListener('message', event => {
+          console.log('CLIENT: Got a message - ', event.data)
+          speakers.append(`<li>${event.data}</li>`)
+        })
+
         regButton.on('click', () => {
           event.preventDefault()
           Notification.requestPermission(result => {
-            if (result !== 'granted') return Promise.reject(Error("Denied notification permission")) // useful tracking breakpoint
+            // Useful tracking breakpoint
+            if (result !== 'granted')
+              return Promise.reject(Error("Denied notification permission"))
           })
           .then(() => navigator.serviceWorker.ready)
-          .then(reg => reg.sync.register('speakerUpdate'))
-          .then(() => console.log('CLIENT: Sync registered'))
-          .catch(err => console.error('CLIENT: It broke', err.message))
+          .then(reg => {
+            // Fake time passing
+            setTimeout(() => {
+              reg.sync.register('speakerUpdate')
+            }, 3000)
+          })
         })
-
-
       })
       .catch(err => console.error('CLIENT: service worker registration failure:', err))
   } else {
@@ -55,4 +64,5 @@
       console.log('CLIENT: Will try to register straight away')
     })
   }
+
 })()

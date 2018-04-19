@@ -1,9 +1,10 @@
 const version = 'v1::'
+const name = 'background'
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches
-      .open(version + 'background')
+      .open(version + name)
       .then(cache =>
         cache.addAll([
           '/',
@@ -33,7 +34,7 @@ self.addEventListener('fetch', event => {
           const cacheCopy = response.clone()
 
           caches
-            .open(version + 'background')
+            .open(version + name)
             .then(cache => {
               cache.put(event.request, cacheCopy)
             })
