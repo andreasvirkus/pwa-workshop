@@ -31,7 +31,10 @@ Some reveal.js features, like external Markdown and speaker notes, require that 
 
    You can change the port by using `npm start -- --port=8001`.
 
+   These slides make heavy use of notes, so make sure to open up the speaker view with **S** key.
+
 ### Folder Structure
+
 - **css/** Core styles without which the project does not function
 - **js/** Like above but for JavaScript
 - **plugin/** Components that have been developed as extensions to reveal.js

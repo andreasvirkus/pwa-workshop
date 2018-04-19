@@ -130,6 +130,7 @@
             <aside class="notes">
               <p>Install is great for priming your cache (defining which resources to cache by default).</p>
               <p>Activate can be used to remove stale cache.</p>
+              <p>Registration also exposes the ServiceWorkerGlobalScope (useful later in push notifications)</p>
             </aside>
           </section>
 
@@ -168,45 +169,38 @@
             <h2>Background Sync</h2>
 
             <aside class="notes">
-              <p>Background Sync is another low-level API allowing you to retry a failed request when the connection is more stable.</p>
-              <p></p>
+              <p>In keeping with the <a href="https://extensiblewebmanifesto.org/">Extensible Web</a>, this is a low level feature that gives you
+                a lot of freedom. You ask for an event to be fired when the user has connectivity (which is immediate if the user
+                already is online).</p>
+              <p>Like push messaging, it uses a service worker as the event target, which enables it to work even when the page isn’t open.</p>
+              <p>A great use case as you can imagine, is allowing you to retry a failed request when the connection is more stable.</p>
             </aside>
           </section>
 
           <section>
             <h2>Events</h2>
-            <p></p>
 
-            <img alt="A list of ServiceWorker events" src="/code-examples/sw-events.png">
+            <img alt="A list of BackgroundSync events" src="/code-examples/sync-events.png">
 
             <aside class="notes">
-              <p>Install is great for priming your cache (defining which resources to cache by default).</p>
-              <p>Activate can be used to remove stale cache.</p>
+              <p>You start out by registering for the worker's sync event with an action-specific (unique!) tag.</p>
+              <p>Then, you listen for that event (SW-side) and do whatever you need to do.</p>
             </aside>
           </section>
 
           <section>
-            <h2>Installing & registering</h2>
-            <p>This happens client-side:</p>
+            <h2>Gotchas</h2>
 
-            <img alt="Registering a service worker" src="/code-examples/sw-register.png">
-          </section>
-
-          <section>
-            <h2>Installing & registering</h2>
-            <p>And then our worker can hook into it:</p>
-
-            <img alt="Listening for worker install" src="/code-examples/sw-install.png">
+            <ul>
+              <li>Unique sync tag name</li>
+              <li>The async function inside waitUntil has to throw or reject</li>
+            </ul>
 
             <aside class="notes">
-              <p>The caches built-in is a promise-based API that helps you cache responses,
-                as well as finding and deleting them.</p>
-              <p>You can open a cache by name, and this method returns a promise. We use
-                a versioned cache name here so that we can remove old cache entries in
-                one fell swoop later, when phasing out an older service worker.</p>
-              <p>After the cache is opened, we can fill it with the offline fundamentals.
-                The method below will add all resources we've indicated to the cache,
-                after making HTTP requests for each of them.</p>
+              <p>People get around the unique tag situation by following progressive-networking principlas</p>
+              <p>Meaning you always cache first locally, then pass the sync handler and in the sync handler
+                always visit the local storage first.</p>
+              <p>The sync event will only be added to the queue if it fails (throws/rejects). Silent-fails are not ok</p>
             </aside>
           </section>
 
@@ -216,6 +210,17 @@
             <p>Currently the spec is in design and opening a site to find content you hadn't
               seen before - without going to the network - is a user experience currently limited
               to native apps.</p>
+
+            <aside class="notes">
+              <p>This will allow you to request a “periodicsync” event that will be restricted by time, battery state and network state.</p>
+              <p>The API is still in design, but it might look a little something like the code below:</p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Periodic sync potential API</h2>
+
+            <img alt="A potential example for periodic sync" src="/code-examples/sync-periodic.png">
           </section>
         </section>
 
@@ -228,20 +233,93 @@
             <h2>Push notifications</h2>
 
             <aside class="notes">
-              <p>.</p>
-              <p></p>
+              <p>A notification is a message that pops up on the user's device. Notifications can be triggered
+                locally by an open application, or they can be "pushed" from the server to the user even when
+                the app is not running. They allow your users to opt-in to timely updates and allow you to
+                effectively re-engage users with customized content.</p>
+              <p>App-side they can be generated either client-side or in the worker thread (slight difference)</p>
+              <p>Two APIs: Notifications API (app-code) and Push API (server code)</p>
             </aside>
           </section>
 
           <section>
-            <h2>Events</h2>
-            <p></p>
+            <h2><code>requestPermission()</code></h2>
 
-            <img alt="A list of ServiceWorker events" src="/code-examples/sw-events.png">
+            <img alt="Requesting permission to use push notifications" src="/code-examples/push-permission.png">
 
             <aside class="notes">
-              <p>Install is great for priming your cache (defining which resources to cache by default).</p>
-              <p>Activate can be used to remove stale cache.</p>
+              <p>You can check to see if you already have permission by checking the value of the
+                Notification.permission read only property. It can have one of three possible values:</p>
+              <ul>
+                <li>default</li>
+                <li>granted</li>
+                <li>denied</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
+            <h2><code>Notification()</code></h2>
+
+            <img alt="Very basic push notifications usage example" src="/code-examples/push-usage.png">
+
+            <aside class="notes">
+              <p>Next, a new notification is created using the Notification() constructor. This must be passed a title argument,
+                and can optionally be passed an options object to specify options, such as text direction, body text, icon to display,
+                notification sound to play, and more.</p>
+              <p>irefox and Safari close notifications automatically after a few moments (around four seconds).
+                This may also happen at the operating system level. Some browsers don't however, such as Chrome.
+                To make sure that the notifications close in all browsers, at the end of the above functions,
+                we call the Notification.close function inside a setTimeout() function to close the notification
+                after 4 seconds. Also note the use of bind() to make sure the close() call is associated with the notification.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Options</h2>
+
+            <img alt="A list of push notification options" src="/code-examples/push-options.png">
+
+            <aside class="notes">
+              <p>These are options the user can choose among in order to act on the action within the context of
+                the notification itself. The action's name is sent to the service worker notification handler
+                to let it know the action was selected by the user.</p>
+              <p>USVString - all possible sequences of unicode scalar values.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Soonish options</h2>
+
+            <img alt="A list of spec-level push notification options" src="/code-examples/push-options-soon.png">
+
+            <aside class="notes">
+              <p>
+                The following options are listed in the most up-to-date spec, but are not supported in any browsers yet.
+
+                silent: A Boolean specifying whether the notification should be silent, i.e. no sounds or vibrations should be issued,
+                regardless of the device settings. The default is false, which means it won't be silent.
+                sound: A USVString containing the URL of an audio file to be played when the notification fires.
+                noscreen: A Boolean specifying whether the notification firing should enable the device's screen or not.
+                The default is false, which means it will enable the screen.
+                sticky: A Boolean specifying whether the notification should be 'sticky', i.e. not easily clearable by the user.
+                The default is false, which means it won't be sticky.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h3>Events & properties</h3>
+
+            <img alt="Notification events and SW notification properties" src="/code-examples/push-events-properties.png">
+
+            <aside class="notes">
+              <p>A list of notification events and SW notification properties</p>
+              <p>The notifications API spec lists two events that are triggered on the Notification instance: click & error</p>
+              <p>These events can be tracked using the <code>onclick</code> and <code>onerror</code> handlers. Because Notification also inherits from
+                EventTarget, it's possible to use the <code>addEventListener()</code> method on it.</p>
+              <p>Note: Trying to create a notification inside the ServiceWorkerGlobalScope using the Notification() constructor will throw an error.</p>
+              <p>That's why you need to use the ServiceWorker scope <code>.showNotification()</code> method</p>
+
             </aside>
           </section>
 
@@ -284,6 +362,11 @@
               <li><a href="https://github.com/GoogleChromeLabs/sw-toolbox">Google sw-toolbox</a></li>
               <li><a href="https://jakearchibald.github.io/isserviceworkerready/resources.html">serviceworkers/list</a></li>
             </ul>
+
+            <aside class="notes">
+              sw-toolbox includes awesome stuff like enable-offline-analytics:
+                https://developers.google.com/web/tools/workbox/guides/enable-offline-analytics
+            </aside>
           </section>
 
           <section>
@@ -295,14 +378,15 @@
           <h2>References:</h2>
 
           <ul>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers">MDN/Web Workers</a></li>
             <li><a href="https://ponyfoo.com/articles/tagged/serviceworker">PonyFoo/serviceworker</a></li>
             <li><a href="https://jakearchibald.github.io/isserviceworkerready/resources.html">serviceworkers/list</a></li>
             <li><a href="https://developers.google.com/web/fundamentals/primers/service-workers/">Google devs</a></li>
             <li><a href="https://ponyfoo.com/articles/progressive-app-serviceworker">PonyFoo/PWA+SW</a></li>
-            <li><a href="https://ponyfoo.com/articles/simple-offline-site-serviceworker">PonyFoo/offline SW</a></li>
+            <li><a href="https://ponyfoo.com/articles/simple-offline-site-serviceworker">PonyFoo/offline caching</a></li>
             <li><a href="https://ponyfoo.com/articles/backgroundsync">PonyFoo/background-sync</a></li>
             <li><a href="https://ponyfoo.com/articles/progressive-networking-serviceworker">PonyFoo/SW networking</a></li>
-            <li><a href="">Slides README.md</a></li>
+            <li><a href="https://github.com/andreasvirkus/pwa-workshop#resources">Slides README.md</a></li>
           </ul>
         </section>
 

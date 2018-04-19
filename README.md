@@ -20,7 +20,10 @@ To present:
 
 See a more detailed usage guide in [/slides](slides/README.md)
 
-Great PWA/SW resources:
+## Resources
+
+Great PWA/SW resources to look into (also see slides/index.html References section):
+
 - [deanhume/pwa-tips-tricks](https://github.com/deanhume/pwa-tips-tricks)
 - the [spec](https://github.com/w3c/ServiceWorker)
 - Webpack [plugin](https://www.npmjs.com/package/sw-precache-webpack-plugin)

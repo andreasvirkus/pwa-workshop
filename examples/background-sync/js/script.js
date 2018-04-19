@@ -31,16 +31,12 @@
   if ('serviceWorker' in navigator) {
     console.log('CLIENT: service worker registration in progress.')
     navigator.serviceWorker.register('/worker.js')
-      .then(reg => {
-        console.log('CLIENT: service worker registration complete:', reg)
-        return navigator.serviceWorker.ready
-      })
-      // .then(reg => navigator.serviceWorker.ready)
+      .then(reg => navigator.serviceWorker.ready)
       .then(reg => {
         // if ('sync' in reg) {}
         console.log('CLIENT: registering sync');
         reqButton.on('click', () => {
-          reg.sync.register('image-fetch').then(() => {
+          reg.sync.register('image-fetch-2').then(() => {
               console.log('CLIENT: sync registered')
           })
         })

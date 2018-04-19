@@ -1,7 +1,7 @@
 (function() {
   const allNavItems = $('.main-nav li')
   const allTabs = $('.tab')
-  const reqButton = $('#request-button')
+  const regButton = $('#register')
 
   allNavItems.on('click', function(e) {
     e.preventDefault()
@@ -31,39 +31,28 @@
   if ('serviceWorker' in navigator) {
     console.log('CLIENT: service worker registration in progress.')
     navigator.serviceWorker.register('/worker.js')
+      .then(reg => navigator.serviceWorker.ready)
       .then(reg => {
-        console.log('CLIENT: service worker registration complete:', reg)
-        return navigator.serviceWorker.ready
-      })
-      // .then(reg => navigator.serviceWorker.ready)
-      .then(reg => { // register sync
-        console.log('CLIENT: registering sync');
-        reqButton.on('click', () => {
-          reg.sync.register('image-fetch').then(() => {
-              console.log('CLIENT: sync registered')
+        // Notification.requestPermission();
+        console.log('CLIENT: request notification permission');
+
+        regButton.on('click', () => {
+          event.preventDefault()
+          Notification.requestPermission(result => {
+            if (result !== 'granted') return Promise.reject(Error("Denied notification permission")) // useful tracking breakpoint
           })
+          .then(() => navigator.serviceWorker.ready)
+          .then(reg => reg.sync.register('speakerUpdate'))
+          .then(() => console.log('CLIENT: Sync registered'))
+          .catch(err => console.error('CLIENT: It broke', err.message))
         })
+
+
       })
       .catch(err => console.error('CLIENT: service worker registration failure:', err))
   } else {
-    reqButton.on('click', () => {
-      console.log('CLIENT: Fallback to fetch the image as usual')
+    regButton.on('click', () => {
+      console.log('CLIENT: Will try to register straight away')
     })
   }
-
-  $('#register').on('click', event => {
-    event.preventDefault()
-    new Promise((resolve, reject) => {
-      Notification.requestPermission(result => {
-        if (result !== 'granted') return reject(Error("Denied notification permission"))
-        resolve()
-      })
-    })
-    .then(() => navigator.serviceWorker.ready)
-    .then(reg => reg.sync.register('syncTest'))
-    .then(() => console.log('CLIENT: Sync registered'))
-    .catch(err => console.error('CLIENT: It broke', err.message))
-  })
-
-  navigator.serviceWorker.ready.then(reg => reg.sync.register('fetchDog'))
 })()

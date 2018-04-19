@@ -67,14 +67,16 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('sync', event => {
   console.log('WORKER sync tag:', event.tag);
-  event.tag === 'image-fetch' && event.waitUntil(fetchDogImage())
+  event.tag == 'image-fetch-2' && event.waitUntil(fetchDogImage())
   event.tag === 'sync-status' && console.log('WORKER: Keeping everything up-to-date')
 })
 
 function fetchDogImage () {
   return fetch('/hasLanded.png')
     .then(res => console.log('WORKER: Request successful', res))
-    // .catch(error => console.error('WORKER: Request failed', error)) //BAD
+    // bad
+    // .catch(error => console.error('WORKER: Request failed', error))
+    // good
     .catch(error => {
       console.error('WORKER: Request failed; scheduled for next time', error)
       return Promise.reject(error) // throw error

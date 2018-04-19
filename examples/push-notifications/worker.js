@@ -1,4 +1,4 @@
-const version = 'v1::'
+const version = 'v2::'
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -67,17 +67,30 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('sync', event => {
   console.log('WORKER sync tag:', event.tag);
-  event.tag === 'register' && event.waitUntil(sendUpdates())
+  event.tag === 'speakerUpdate' && event.waitUntil(sendUpdates())
 })
 
-function fetchDogImage () {
-  return fetch('/gotNewSpeakers')
+self.addEventListener('notificationclick', event => {
+  event.notification.close()
+
+  event.waitUntil(clients.matchAll({ type: "window" })
+    .then(clientList => {
+      const urlToOpen = new URL(self.location.origin).href
+      const client = clientList.find(client => client.url === urlToOpen && 'focus' in client)
+      // If the tab is opened, focus it; otherwise open new one with root SW scope
+      return client ? client.focus() : clients.openWindow('/')
+    })
+  )
+})
+
+
+function sendUpdates () {
+  return fetch('/speakers.json')
+    .then(res => res.json())
     .then(res => console.log('WORKER: Request successful', res))
-    // .catch(error => console.error('WORKER: Request failed', error)) //BAD
+    .then(() => self.registration.showNotification('New speakers arrived!'))
     .catch(error => {
       console.error('WORKER: Request failed; scheduled for next time', error)
       return Promise.reject(error) // throw error
     })
 }
-
-self.registration.showNotification('SW is ready!');
