@@ -72,7 +72,7 @@ self.addEventListener('sync', event => {
 })
 
 function fetchDogImage () {
-  return fetch('./hasLanded.png')
+  return fetch('/hasLanded.png')
     .then(res => console.log('WORKER: Request successful', res))
     // .catch(error => console.error('WORKER: Request failed', error)) //BAD
     .catch(error => {

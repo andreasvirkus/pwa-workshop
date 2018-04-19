@@ -94,3 +94,8 @@ button {
   text-transform: uppercase;
   cursor: pointer;
 }
+
+.center {
+  text-align: center;
+  margin: 1em auto;
+}

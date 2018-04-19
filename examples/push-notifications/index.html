@@ -17,12 +17,12 @@
     <nav class="main-nav">
       <div id="connection-status"></div>
       <ul>
-        <li>
+        <li class="active">
           <a href="#speakers">
             <span>Speakers</span>
           </a>
         </li>
-        <li class="active">
+        <li>
           <a href="#schedule">
             <span>Schedule</span>
           </a>
@@ -36,8 +36,8 @@
 
     </nav>
 
-    <main class="tabs active">
-      <div class="tab" id="speakers">
+    <main class="tabs">
+      <div class="tab active" id="speakers">
         <h1>Speakers</h1>
 
         <ul class="speaker-list">
@@ -46,7 +46,9 @@
           <li>Fake Person</li>
         </ul>
 
-        <button id="register">Notify me of new speakers</button>
+        <div class="center">
+          <button id="register">Notify me of new speakers</button>
+        </div>
       </div>
 
       <div class="tab" id="schedule">
