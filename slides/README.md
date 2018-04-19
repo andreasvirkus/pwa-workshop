@@ -4,6 +4,7 @@ This is a workshop/presentation to educate people about Progressive Web Applicat
 and tips to easily include them in production.
 
 Uses [reveal.js](http://revealjs.com/) for its slides.
+Code screenshots generated with [carbon](https://carbon.now.sh).
 
 ### Setup
 

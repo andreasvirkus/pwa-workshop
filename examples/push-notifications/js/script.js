@@ -19,9 +19,9 @@
     const connectionStatus = $('#connection-status');
     const status = navigator.onLine
      ? '🍏 You are currently online!'
-     : '🍎 You are currently offline.<br> Any requests made will be queued and synced as soon as you are connected again.'
+     : '🍎 You are currently offline. Any requests made will be queued and synced as soon as you are connected again.'
 
-    connectionStatus.html(status)
+    connectionStatus.text(status)
   }
 
   window.addEventListener('online', isOnline);
@@ -36,8 +36,7 @@
         return navigator.serviceWorker.ready
       })
       // .then(reg => navigator.serviceWorker.ready)
-      .then(reg => {
-        // if ('sync' in reg) {}
+      .then(reg => { // register sync
         console.log('CLIENT: registering sync');
         reqButton.on('click', () => {
           reg.sync.register('image-fetch').then(() => {
@@ -52,5 +51,19 @@
     })
   }
 
-  navigator.serviceWorker.ready.then(reg => reg.sync.register('sync-status'))
+  $('#register').on('click', event => {
+    event.preventDefault()
+    new Promise((resolve, reject) => {
+      Notification.requestPermission(result => {
+        if (result !== 'granted') return reject(Error("Denied notification permission"))
+        resolve()
+      })
+    })
+    .then(() => navigator.serviceWorker.ready)
+    .then(reg => reg.sync.register('syncTest'))
+    .then(() => console.log('CLIENT: Sync registered'))
+    .catch(err => console.error('CLIENT: It broke', err.message))
+  })
+
+  navigator.serviceWorker.ready.then(reg => reg.sync.register('fetchDog'))
 })()

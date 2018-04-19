@@ -164,12 +164,131 @@
         </section>
 
         <section>
-          <h2>Workflow</h2>
+          <section>
+            <h2>Background Sync</h2>
 
-          <ul>
-            <li><a href="https://www.npmjs.com/package/sw-precache-webpack-plugin">sw-precache-webpack-plugin</a></li>
-            <li><a href="https://jakearchibald.github.io/isserviceworkerready/resources.html">serviceworkers/list</a></li>
-          </ul>
+            <aside class="notes">
+              <p>Background Sync is another low-level API allowing you to retry a failed request when the connection is more stable.</p>
+              <p></p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Events</h2>
+            <p></p>
+
+            <img alt="A list of ServiceWorker events" src="/code-examples/sw-events.png">
+
+            <aside class="notes">
+              <p>Install is great for priming your cache (defining which resources to cache by default).</p>
+              <p>Activate can be used to remove stale cache.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Installing & registering</h2>
+            <p>This happens client-side:</p>
+
+            <img alt="Registering a service worker" src="/code-examples/sw-register.png">
+          </section>
+
+          <section>
+            <h2>Installing & registering</h2>
+            <p>And then our worker can hook into it:</p>
+
+            <img alt="Listening for worker install" src="/code-examples/sw-install.png">
+
+            <aside class="notes">
+              <p>The caches built-in is a promise-based API that helps you cache responses,
+                as well as finding and deleting them.</p>
+              <p>You can open a cache by name, and this method returns a promise. We use
+                a versioned cache name here so that we can remove old cache entries in
+                one fell swoop later, when phasing out an older service worker.</p>
+              <p>After the cache is opened, we can fill it with the offline fundamentals.
+                The method below will add all resources we've indicated to the cache,
+                after making HTTP requests for each of them.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Periodic sync</h2>
+
+            <p>Currently the spec is in design and opening a site to find content you hadn't
+              seen before - without going to the network - is a user experience currently limited
+              to native apps.</p>
+          </section>
+        </section>
+
+				<section data-background-image="https://media3.giphy.com/media/DBa308wq8XTMs/giphy.gif">
+					<h2>Demo time!</h2>
+        </section>
+
+        <section>
+          <section>
+            <h2>Push notifications</h2>
+
+            <aside class="notes">
+              <p>.</p>
+              <p></p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Events</h2>
+            <p></p>
+
+            <img alt="A list of ServiceWorker events" src="/code-examples/sw-events.png">
+
+            <aside class="notes">
+              <p>Install is great for priming your cache (defining which resources to cache by default).</p>
+              <p>Activate can be used to remove stale cache.</p>
+            </aside>
+          </section>
+
+          <section>
+            <h2>Installing & registering</h2>
+            <p>This happens client-side:</p>
+
+            <img alt="Registering a service worker" src="/code-examples/sw-register.png">
+          </section>
+
+          <section>
+            <h2>Installing & registering</h2>
+            <p>And then our worker can hook into it:</p>
+
+            <img alt="Listening for worker install" src="/code-examples/sw-install.png">
+
+            <aside class="notes">
+              <p>The caches built-in is a promise-based API that helps you cache responses,
+                as well as finding and deleting them.</p>
+              <p>You can open a cache by name, and this method returns a promise. We use
+                a versioned cache name here so that we can remove old cache entries in
+                one fell swoop later, when phasing out an older service worker.</p>
+              <p>After the cache is opened, we can fill it with the offline fundamentals.
+                The method below will add all resources we've indicated to the cache,
+                after making HTTP requests for each of them.</p>
+            </aside>
+          </section>
+        </section>
+
+				<section data-background-image="https://media3.giphy.com/media/13xHqoOQOdFu5a/giphy.gif">
+					<h2>Demo time!</h2>
+        </section>
+
+        <section>
+          <section>
+            <h2>'Erryday workflow</h2>
+
+            <ul>
+              <li><a href="https://www.npmjs.com/package/sw-precache-webpack-plugin">sw-precache-webpack-plugin</a></li>
+              <li><a href="https://github.com/GoogleChromeLabs/sw-toolbox">Google sw-toolbox</a></li>
+              <li><a href="https://jakearchibald.github.io/isserviceworkerready/resources.html">serviceworkers/list</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <img alt="Using the sw-precache-webpack-plugin" src="/code-examples/webpack-plugin.png">
+          </section>
         </section>
 
         <section>
@@ -183,10 +302,11 @@
             <li><a href="https://ponyfoo.com/articles/simple-offline-site-serviceworker">PonyFoo/offline SW</a></li>
             <li><a href="https://ponyfoo.com/articles/backgroundsync">PonyFoo/background-sync</a></li>
             <li><a href="https://ponyfoo.com/articles/progressive-networking-serviceworker">PonyFoo/SW networking</a></li>
+            <li><a href="">Slides README.md</a></li>
           </ul>
         </section>
 
-        <section>
+        <section data-background-image="https://media0.giphy.com/media/6Q2KA5ly49368/giphy.gif">
           <h2>Questions? No?</h2>
 
           <h2>Thanks!</h2>

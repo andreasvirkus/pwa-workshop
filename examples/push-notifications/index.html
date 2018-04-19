@@ -12,10 +12,10 @@
       <p>A <strong>fake</strong> conference all about offline capabilities in fakesville, fakerton.</p>
       <p>If you've been here at least once in a browser that supports `serviceWorker` you'll be
         able to load it offline. Check out <a href="https://github.com/andreasvirkus/pwa-workshop">the repo</a>.</p>
-      <div id="connection-status"></div>
     </header>
 
     <nav class="main-nav">
+      <div id="connection-status"></div>
       <ul>
         <li>
           <a href="#speakers">
@@ -36,7 +36,7 @@
 
     </nav>
 
-    <main class="tabs">
+    <main class="tabs active">
       <div class="tab" id="speakers">
         <h1>Speakers</h1>
 
@@ -45,6 +45,8 @@
           <li>Fake Person</li>
           <li>Fake Person</li>
         </ul>
+
+        <button id="register">Notify me of new speakers</button>
       </div>
 
       <div class="tab" id="schedule">
@@ -61,7 +63,7 @@
         </dl>
       </div>
 
-      <div class="tab active" id="tickets">
+      <div class="tab" id="tickets">
         <h1>Tickets</h1>
 
         <p>Woah, tickets seem to be going mighty fast. You better...</p>

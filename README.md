@@ -24,6 +24,7 @@ Great PWA/SW resources:
 - [deanhume/pwa-tips-tricks](https://github.com/deanhume/pwa-tips-tricks)
 - the [spec](https://github.com/w3c/ServiceWorker)
 - Webpack [plugin](https://www.npmjs.com/package/sw-precache-webpack-plugin)
+- [BackgroundSync](https://github.com/WICG/BackgroundSync/blob/master/explainer.md)
 
 ## TODO:
 - ~Example of offline support~
