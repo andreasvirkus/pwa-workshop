@@ -1,5 +1,5 @@
 // Based off of https://ponyfoo.com/articles/simple-offline-site-serviceworker
-const version = 'v2::'
+const version = 'v1::'
 const name = 'offline'
 
 self.addEventListener('install', event => {

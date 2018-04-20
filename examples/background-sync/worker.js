@@ -68,7 +68,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('sync', event => {
   console.log('WORKER sync tag:', event.tag);
-  event.tag == 'image-fetch-2' && event.waitUntil(fetchDogImage())
+  event.tag == 'image-fetch' && event.waitUntil(fetchDogImage())
   event.tag === 'sync-status' && console.log('WORKER: Keeping everything up-to-date')
 })
 

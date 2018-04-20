@@ -89,7 +89,8 @@ function sendUpdates () {
     .then(res => res.json())
     .then(res => {
       self.registration.showNotification('New speakers at Offline Conf!', {
-        body: '👨‍🚀 ' + res.additions
+        body: '👨‍🚀 ' + res.additions,
+        sticky: true
       })
       return res.additions
     })

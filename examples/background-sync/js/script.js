@@ -33,10 +33,9 @@
     navigator.serviceWorker.register('/worker.js')
       .then(reg => navigator.serviceWorker.ready)
       .then(reg => {
-        // if ('sync' in reg) {}
         console.log('CLIENT: registering sync');
         reqButton.on('click', () => {
-          reg.sync.register('image-fetch-2').then(() => {
+          reg.sync.register('image-fetch').then(() => {
               console.log('CLIENT: sync registered')
           })
         })
